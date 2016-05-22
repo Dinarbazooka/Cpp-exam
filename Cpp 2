@@ -1,0 +1,151 @@
+Класс "Tree"
+
+
+#include "stdafx.h"
+#include <iostream>
+#include <queue>
+#include <ctime>
+
+using namespace std;
+
+class tree {
+	class Node
+	{
+		friend class tree;
+		int info;
+		Node * left, *right;
+	public:
+		Node(int info, Node *left = NULL, Node *right = NULL) {
+			this->info = info;
+			this->left = left;
+			this->right = right;
+		}
+		void Print() {
+			cout << info << "  ";
+		}
+		int getValue() {
+			return info;
+		}
+		Node*& getLeft() {
+			return left;
+		}
+		Node*& getRight() {
+			return right;
+		}
+	};
+
+	Node* root;
+public:
+	tree() {
+		root = NULL;
+	}
+	void add(int value) {
+		add(root, value);
+	}
+	void print() {
+		print(root);
+	}
+	int daleko() {
+		return daleko(root);
+	}
+	int sum() {
+		return sum(root);
+	}
+	void PrintByLevel() {
+		PrintByLevel(root);
+	}
+	bool operator == (tree t) {
+		return Equ(root, t.root);
+	}
+	~tree() {
+		Delete(root);
+	}
+	//Node * Find(int x) { return RFind(root, x); }
+
+private:
+	bool Equ(Node* r1, Node* r2) {
+		if (r1 == NULL && r2 == NULL)
+			return true;
+		if (r1 != NULL && r2 == NULL)
+			return false;
+
+	}
+	void add(Node *&z, int num) {
+		if (z == NULL)
+			z = new Node(num);
+		else
+		{
+			if (z->getValue() == num)
+				return;
+			if (num > z->getValue())
+				add(z->getRight(), num);
+			else
+				add(z->getLeft(), num);
+		}
+	}
+	int print(Node *z) {
+		if (z == NULL)
+			return 0;
+		else {
+			int l = print(z->left);
+			z->Print();
+			int r = print(z->right);
+			return l + r + 1;
+		}
+	}
+	void Delete(Node* z) {
+		if (z == NULL) return;
+		Delete(z->getLeft());
+		Delete(z->getRight());
+		delete z;
+		cout << "uzel udalen" << endl;
+	}
+	int sum(Node *z) {
+		if (z == NULL)
+			return 0;
+		else {
+			int l = sum(z->getLeft());
+			int r = sum(z->getRight());
+			return r + l + z->getValue();
+		}
+	}
+	int daleko(Node *z) {
+		if (z == NULL)
+			return 0;
+		else {
+			int countl = daleko(z->getLeft());
+			int countr = daleko(z->getRight());
+			return max(countl, countr) + 1;
+		}
+	}
+	void PrintByLevel(Node *z) {
+		queue <Node *> q;
+		q.push(root);
+		while (!q.empty()) {
+			Node* z = q.front();
+			q.pop();
+			z->Print();
+			if (z->left != 0)
+				q.push(z->left);
+			if (z->right != 0)
+				q.push(z->right);
+		}
+	}
+	void PrintDFS(Node *z) {
+		if (z->left != NULL)
+			PrintDFS(z->left);
+	}
+};
+
+int main() {
+	srand(time(0));
+	tree ftree;
+	cout << endl;
+	int q = 100;
+	for (int i = 0; i < q; i++)
+		ftree.add(rand() % 50);
+	ftree.print();
+	cout << endl;
+	ftree.PrintByLevel();
+	system("pause");
+}
