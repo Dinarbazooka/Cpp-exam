@@ -1,0 +1,32 @@
+Обменная сортировка (пузырьком). Дан массив целых чисел из N элементов. 
+Упорядочить элементы в порядке не убывания путём сравнения пар соседних элементов.
+
+package main 
+
+import "fmt"
+
+func main() {
+	fmt.Println("Введите количество членов последовательности ")
+	var n int
+	fmt.Scan(&n)
+	arr := make([]int, n)
+	fmt.Println("Введит массив ")
+	for i := 0; i < n; i++ {
+		fmt.Scan(&arr[i])
+	}
+	for i := 0; i<n; i++ {
+		fmt.Printf(" %v ", arr[i])
+	}
+	for k := 1; k<n; k++ {
+		for i := 0; i<n-k; i++ {
+			if arr[i] > arr[i+1] {
+				t := arr[i]
+				arr[i] = arr[i+1]
+				arr[i+1] = t
+			}
+		}
+	}
+	for i := 0; i<n; i++ {
+		fmt.Printf(" %v ", arr[i])
+	}
+}
