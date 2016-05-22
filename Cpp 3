@@ -1,0 +1,32 @@
+Жадные и динамические алгоритмы: 
+
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
+
+int Vozr(int *a) {
+	int *c = new int[sizeof(a)];
+	c[0] = 1;
+	for (int i = 1; i < sizeof(a); i++)
+		c[i] = 0;
+	for (int i = 1; i < sizeof(a); i++) {
+		int count = 1;
+		for (int j = 0; j < i; j++) {
+			if (a[i] > a[j]) count++;
+		}
+		c[i] = count;
+	}
+	int max = 0;
+	for (int i = 0; i < sizeof(a) - 1; i++)
+		max = max(c[i], c[i + 1]);
+	int *neponyatno = new int[sizeof(a)];
+	neponyatno[0] = -1;
+	for (int i = 0; i < sizeof(a); i++)
+		for (int j = 0; j < i; j++) {
+			if (a[i] > a[j] && c[i] <= c[j])
+				neponyatno[i] = j + 1;
+		}
+	for (int i = 0; i < max; i++)
+		cout << a[neponyatno[i]];
+} 
