@@ -1,0 +1,25 @@
+В массиве переставить элементы в обратном порядке, т.е поменять местами 1-й и последний, 2-й и предпоследний и т.д. В первой строке задаётся размер массива, во второй – сам массив
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Введите количество членов последовательности ")
+	var n int
+	fmt.Scan(&n)
+	arr := make([]int, n)
+	fmt.Println("Введит массив ")
+	for i := 0; i < n; i++ {
+		fmt.Scan(&arr[i])
+	}
+	var i, j int
+	for i, j = 0, n-1; i < j; i, j = i+1, j-1 {
+        t := arr[i]
+		arr[i] = arr[j]
+		arr[j] = t
+	}
+	for i := 0; i<n; i++ {
+		fmt.Printf(" %v ", arr[i])
+	}
+}
