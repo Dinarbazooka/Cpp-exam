@@ -1,0 +1,88 @@
+Реализовать двусвязный список с функциями добавления в конец, в заданное место, удаления с конца, по значению, печати и т.д.
+
+package main
+
+import (
+	"fmt"
+)
+
+type Element struct {
+	value int
+	next  *Element
+	prev *Element
+}
+
+func main() {
+	var first *Element // nil
+
+	var n int
+	fmt.Print("Введите количество элементов: ")
+	fmt.Scan(&n)
+
+	fmt.Println("Элементы:")
+
+	for i := 0; i < n; i++ {
+		var num int
+		fmt.Scan(&num)
+
+		if i == 0 {
+			first = new(Element)
+			first.value = num
+		} else {
+			zapolnit(first, num, i)
+		}
+	}
+	printLink(first)
+	fmt.Println()
+
+	deleteL(first, n)
+
+	printLink(first)
+	fmt.Println()
+
+	for p := first; p != nil; p = p.next {
+		fmt.Printf("%v ->", p.prev.value)
+	}
+}
+
+func zapolnit(first *Element, v int, i int) {
+	newElement := new(Element)
+	newElement.value = v
+	anElement := new(Element)
+	j := 0
+	for p := first; p != nil; p = p.next {
+		if j == i-1 {
+			anElement = p.prev
+		}
+		j++
+	}
+	for p := first; ; p = p.next {
+		if p.next == nil {
+			p.next = newElement
+			p.prev = anElement
+			break
+		}
+	}
+}
+
+func printLink(first *Element) {
+	for p := first; p != nil; p = p.next {
+		fmt.Printf("%v -> ", p.value)
+	}
+}
+
+func deleteL(first *Element, n int) {
+	i := 0
+	stop := n-2
+	xvatit := n-1
+	for p := first; p != nil; p = p.next {
+		if i == stop {
+			p.next = nil
+		}
+		if i == xvatit {
+			p.prev = nil
+		}
+		i++
+	}
+}
+
