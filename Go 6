@@ -1,0 +1,180 @@
+Реализовать односвязный список с функциями добавления в конец, в заданное место, удаления с конца, по значению, печати и т.д.
+
+package main
+
+import (
+	"fmt"
+)
+
+type Element struct {
+	value int
+	next  *Element
+}
+
+func main() {
+	var first *Element // nil
+
+	var n int
+	fmt.Print("Введите количество элементов: ")
+	fmt.Scan(&n)
+
+	fmt.Println("Элементы:")
+
+	for i := 0; i < n; i++ {
+		var num int
+		fmt.Scan(&num)
+
+		if i == 0 {
+			first = new(Element)
+			first.value = num
+		} else {
+			toEnd(first, num)
+		}
+	}
+
+	fmt.Print("Введите номер позиции: ")
+	var nuzhny int
+	fmt.Scan(&nuzhny)
+
+	fmt.Println("Введите значение в новом поле ")
+	var anValue int
+	fmt.Scan(&anValue)
+
+	if nuzhny >= n {
+		fmt.Println("Нельзя так ")
+		return
+	} 
+
+	printLink(first)
+	fmt.Println()
+
+	dobavit(first, nuzhny, anValue)
+
+	printLink(first)
+	fmt.Println()
+
+	fmt.Println("Введите значение удаляемого элемента ")
+	var ydalit int
+	fmt.Scan(&ydalit)
+	fmt.Println()
+
+	printLink(first)
+	fmt.Println()
+
+	ydalim(first, ydalit)
+
+	printLink(first)
+
+
+	/*printLink(first)
+	fmt.Println()
+
+	deleteL(first, n)
+
+	printLink(first)
+	fmt.Println()*/
+}
+//Узнать количество элементов в списке
+func razmer(first *Element) int {
+    result:=1
+    for p:=first; p.next!=nil; p=p.next {
+        result++;
+    }
+    return (result);
+}
+
+
+// Добавление в конец списка
+func toEnd(first *Element, v int) {
+	// Создание нового элемента
+	newElement := new(Element)
+	newElement.value = v
+
+	// Добавление элемента в конец
+	for p := first; ; p = p.next {
+		if p.next == nil {
+			p.next = newElement
+			break
+		}
+	}
+}
+//Печать списка
+func printLink(first *Element) {
+	for p := first; p != nil; p = p.next {
+		fmt.Printf("%v -> ", p.value)
+	}
+}
+//Удалить последний
+func deleteL(first *Element, n int) {
+	i := 0
+	stop := n - 2
+	for p := first; p != nil; p = p.next {
+		if i == stop {
+			p.next = nil
+		}
+		i++
+	}
+}
+//Добавить элемент в заданное место в списке 
+func dobavit(first *Element, nuzhny int, anValue int) {
+	i := 0
+	syda := nuzhny-2
+	newElement := new(Element)
+	newElement.value = anValue
+	for p := first; p != nil; p = p.next {
+		if i == syda {
+			newElement.next = p.next
+			p.next = newElement
+		}
+		i++
+	}
+}
+//Удалить элемент по его значению 
+func ydalim(first *Element, ydalit int) {
+	i := 0
+	newElement := new(Element)
+	for p := first; p != nil; p = p.next {
+		j := 0
+		if ydalit == p.value {
+			if i == 0 {
+				p = first.next
+				first = nil
+				continue
+			}
+			for q := first; q != nil; q = q.next {
+				if i == 0 {
+					break
+				}
+				if j == i - 1 {
+					newElement = q
+				}
+				j++
+			}
+			newElement.next = p.next
+		}
+		i++
+	}
+}
+//Удалить все элементы с заданным значением
+func ydalimAll(first *Element, ydalit int){
+    for k:=0; k<razmer(first); k++{
+        for p:=first; p.next!=nil ; p=p.next{
+            if (p.next.value==ydalit){
+                p.next=p.next.next;
+            }
+        }
+    }    
+}
+
+//Сортировка элементов списка
+func sort(first *Element){
+    for i:=0;i<razmer(first);i++{
+        for p:=first;p.next!=nil;p=p.next{
+            if p.value>p.next.value{
+   t := p.value
+   p.value = p.next.value
+	   p.next.value = t
+            }
+        } 
+    }   
+}
